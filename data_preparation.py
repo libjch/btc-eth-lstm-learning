@@ -62,7 +62,7 @@ print(data_y.shape)
 
 print(model.summary())
 
-history = model.fit(data_x, data_y, epochs=50, batch_size=1, verbose=2)
+history = model.fit(data_x, data_y, epochs=10, batch_size=1, verbose=2)
 # plot history
 # pyplot.plot(history.history['loss'], label='train')
 # pyplot.plot(history.history['val_loss'], label='test')
