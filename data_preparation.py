@@ -1,10 +1,10 @@
 import pandas
-import matplotlib.pyplot as pyplot
+# import matplotlib.pyplot as pyplot
 import numpy as np
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 from keras.layers import LSTM
-from keras.layers import TimeDistributed
+# from keras.layers import TimeDistributed
 from keras.utils.vis_utils import plot_model
 from load_data import load_data
 
@@ -18,7 +18,7 @@ btc_values = btc_dataset.values[:, 1]
 # plt.show()
 
 
-data_x, data_y = load_data(btc_values, 10)
+data_x, data_y = load_data(btc_values, 20)
 
 num_sample = len(data_x)
 time_steps_x = len(data_x[1])
@@ -30,6 +30,7 @@ print("steps y " + str(time_steps_y))
 model = Sequential()
 model.add(LSTM(time_steps_y, input_shape=(time_steps_x, 1)))
 # model.add(TimeDistributed(Dense(time_steps_y)))
+model.add(Dropout(0.4))
 model.add(Dense(time_steps_y))
 model.compile(loss='mse', optimizer='adam')
 # fit network
@@ -41,9 +42,9 @@ print(data_y.shape)
 
 print(model.summary())
 
-plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+# plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
 
-history = model.fit(data_x, data_y, epochs=5è0, batch_size=1, verbose=2)
+history = model.fit(data_x, data_y, epochs=10, batch_size=16, verbose=1)
 # plot history
 # pyplot.plot(history.history['loss'], label='train')
 # pyplot.plot(history.history['val_loss'], label='test')
