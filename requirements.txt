@@ -1,2 +1,6 @@
+keras
+numpy
+pandas
+matplotlib
 requests
 gdax

@@ -10,26 +10,26 @@ from keras.models import model_from_json
 import os
 from load_data import load_data
 
-eth_dataset = pandas.read_csv('eth-usd.csv')
-eth_values = eth_dataset.values[:, 1]
 
-# load json and create model
-json_file = open('model.json', 'r')
-loaded_model_json = json_file.read()
-json_file.close()
-loaded_model = model_from_json(loaded_model_json)
-# load weights into new model
-loaded_model.load_weights("model.h5")
-print("Loaded model from disk")
+def test_model(model):
+    eth_dataset = pandas.read_csv('eth-usd-small.csv')
+    btc_values = eth_dataset.values[:, 1]
+    test_x, test_y = load_data(btc_values, 50)
 
-# evaluate loaded model on test data
-loaded_model.compile(loss='mse', optimizer='adam')
+    test_x = np.reshape(test_x, (test_x.shape[0], test_x.shape[1], 1))
 
-data_x, data_y = load_data(eth_values, 50)
-data_x = np.reshape(data_x, (data_x.shape[0], data_x.shape[1], 1))
+    predicted = model.predict(test_x)
 
-score = loaded_model.evaluate(data_x, data_y, verbose=0)
+    print("Predicted:")
+    print(predicted[:20])
+    print("Values:")
+    print(test_y[:20])
+    try:
+        pyplot.figure(figsize=(800, 800))
+        pyplot.plot(test_y[:10], color='black')
+        pyplot.plot(predicted[:10], color='blue')
+        pyplot.show()
+    except Exception as e:
+        print(e)
 
-print(score*100)
-
-# print("%s: %.2f%%" % (loaded_model.metrics_names[0], score[0] * 100))
+    # print("%s: %.2f%%" % (loaded_model.metrics_names[0], score[0] * 100))
