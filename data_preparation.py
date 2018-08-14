@@ -65,7 +65,7 @@ y_axis = list(range(27, 33))
 # pyplot.show()
 
 plot_model(model, to_file='model.png', show_shapes=True)
-history = model.fit(data_x_3d, data_y, epochs=200, batch_size=32, verbose=2, validation_split=0.2, shuffle=True)
+history = model.fit(data_x_3d, data_y, epochs=50, batch_size=64, verbose=2, validation_split=0.2, shuffle=True)
 
 save_model(model)
 

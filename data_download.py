@@ -15,7 +15,7 @@ public_client = gdax.PublicClient()
 #
 # print(res)
 
-temp = datetime.date(year=2016, month=1, day=1)
+temp = datetime.date(year=2015, month=1, day=1)
 fromts = time.mktime(temp.timetuple())
 
 start = datetime.datetime.fromtimestamp(fromts)
