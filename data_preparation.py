@@ -4,7 +4,7 @@ import pandas
 import matplotlib.pyplot as pyplot
 import numpy as np
 from keras.models import Sequential
-from keras.layers import Dense, Dropout
+from keras.layers import Dense, Dropout, Flatten
 from keras.layers import LSTM
 # from keras.layers import TimeDistributed
 from keras.utils.vis_utils import plot_model
@@ -41,28 +41,22 @@ print("steps x " + str(time_steps_x))
 print("steps y " + str(time_steps_y))
 
 model = Sequential()
-
-model.add(LSTM(time_steps_y, activation='tanh', inner_activation='hard_sigmoid', input_shape=(time_steps_x, 1)))
+model.add(Flatten(input_shape=(time_steps_x, 1)))
+model.add(Dense(64, activation='tanh'))
+model.add(Dense(128, activation='linear'))
 model.add(Dropout(0.2))
+model.add(Dense(32, activation='tanh'))
+model.add(Dropout(0.2))
+model.add(Dense(16, activation='linear'))
 model.add(Dense(time_steps_y, activation='linear'))
-
-# model.add(LSTM(time_steps_y, input_shape=(time_steps_x, 1), go_backwards=False))
-# model.add(Dropout(0.2))
-# model.add(Denste(27, input_dim=37))
-# model.add(Dense(time_steps_x))
-# model.add(Dense(time_steps_y))
-
 model.compile(loss='mse', optimizer='adam')
 # fit network
 data_x_3d = np.reshape(data_x, (num_sample, time_steps_x, 1))
 
-SHOW_LINES = 50
 x_axis = list(range(0, 27))
 y_axis = list(range(27, 33))
-# pyplot.figure(figsize=(800, 800))
 
-cycol = cycle('bgrcmk')
-
+# cycol = cycle('bgrcmk')
 # for index in range(0, num_sample, int(num_sample / SHOW_LINES)):
 #     color = next(cycol)
 #     pyplot.plot(x_axis, data_x[index], color=color)
@@ -71,10 +65,8 @@ cycol = cycle('bgrcmk')
 # pyplot.show()
 
 plot_model(model, to_file='model.png', show_shapes=True)
-history = model.fit(data_x_3d, data_y, epochs=100, batch_size=72, verbose=2, validation_split=0.2, shuffle=True)
+history = model.fit(data_x_3d, data_y, epochs=200, batch_size=32, verbose=2, validation_split=0.2, shuffle=True)
 
 save_model(model)
 
-#test_model(model)
-
-
+# test_model(model)

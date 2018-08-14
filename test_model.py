@@ -28,7 +28,7 @@ if __name__ == "__main__":
     model = load_model()
     predicted, test_y = test_model(model)
 
-    print(predicted[1::997])
+    print(predicted[1::97])
     #
     # print("Predicted:")
     # print(predicted[:20])
@@ -36,8 +36,8 @@ if __name__ == "__main__":
     # print(test_y[:20])
     try:
         # pyplot.figure(figsize=(800, 800))
-        pyplot.plot(test_y[1::1000], color='black')
-        pyplot.plot(predicted[1::1000], color='blue')
+        pyplot.plot(test_y[1::10], color='black')
+        pyplot.plot(predicted[1::10], color='blue')
         pyplot.show()
     except Exception as e:
         print(e)
