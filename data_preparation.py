@@ -23,14 +23,15 @@ def load_from_file():
     data_y = np.load("btc-usd-prepared-y.npy")
     return data_x, data_y
 
+
 def save_to_file():
     data_x, data_y = load_data(btc_values, 5)
-    np.save("btc-usd-prepared-x.npy",data_x)
-    np.save("btc-usd-prepared-y.npy",data_y)
+    np.save("btc-usd-prepared-x.npy", data_x)
+    np.save("btc-usd-prepared-y.npy", data_y)
     return data_x, data_y
 
-data_x, data_y = load_from_file()
 
+data_x, data_y = load_from_file()
 
 num_sample = len(data_x)
 time_steps_x = len(data_x[1])
@@ -40,31 +41,40 @@ print("steps x " + str(time_steps_x))
 print("steps y " + str(time_steps_y))
 
 model = Sequential()
-model.add(LSTM(time_steps_y, input_shape=(time_steps_x, 1)))
+
+model.add(LSTM(time_steps_y, activation='tanh', inner_activation='hard_sigmoid', input_shape=(time_steps_x, 1)))
 model.add(Dropout(0.2))
-model.add(Dense(time_steps_y))
+model.add(Dense(time_steps_y, activation='linear'))
+
+# model.add(LSTM(time_steps_y, input_shape=(time_steps_x, 1), go_backwards=False))
+# model.add(Dropout(0.2))
+# model.add(Denste(27, input_dim=37))
+# model.add(Dense(time_steps_x))
+# model.add(Dense(time_steps_y))
+
 model.compile(loss='mse', optimizer='adam')
 # fit network
 data_x_3d = np.reshape(data_x, (num_sample, time_steps_x, 1))
 
-SHOW_LINES =50
+SHOW_LINES = 50
 x_axis = list(range(0, 27))
 y_axis = list(range(27, 33))
 # pyplot.figure(figsize=(800, 800))
 
 cycol = cycle('bgrcmk')
 
-for index in range(0, num_sample,int(num_sample/SHOW_LINES)):
+for index in range(0, num_sample, int(num_sample / SHOW_LINES)):
     color = next(cycol)
     pyplot.plot(x_axis, data_x[index], color=color)
     pyplot.plot(y_axis, data_y[index], color=color)
 # pyplot.plot(data_y[-10:][1], color='blue')
-pyplot.show()
-
+# pyplot.show()
 
 plot_model(model, to_file='model.png', show_shapes=True)
-history = model.fit(data_x_3d, data_y, epochs=10, batch_size=72, verbose=2, validation_split=0.2, shuffle=True)
+history = model.fit(data_x_3d, data_y, epochs=3, batch_size=72, verbose=2, validation_split=0.2, shuffle=True)
 
 save_model(model)
 
 #test_model(model)
+
+
