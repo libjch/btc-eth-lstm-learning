@@ -63,15 +63,15 @@ y_axis = list(range(27, 33))
 
 cycol = cycle('bgrcmk')
 
-for index in range(0, num_sample, int(num_sample / SHOW_LINES)):
-    color = next(cycol)
-    pyplot.plot(x_axis, data_x[index], color=color)
-    pyplot.plot(y_axis, data_y[index], color=color)
+# for index in range(0, num_sample, int(num_sample / SHOW_LINES)):
+#     color = next(cycol)
+#     pyplot.plot(x_axis, data_x[index], color=color)
+#     pyplot.plot(y_axis, data_y[index], color=color)
 # pyplot.plot(data_y[-10:][1], color='blue')
 # pyplot.show()
 
 plot_model(model, to_file='model.png', show_shapes=True)
-history = model.fit(data_x_3d, data_y, epochs=3, batch_size=72, verbose=2, validation_split=0.2, shuffle=True)
+history = model.fit(data_x_3d, data_y, epochs=100, batch_size=72, verbose=2, validation_split=0.2, shuffle=True)
 
 save_model(model)
 

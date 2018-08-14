@@ -15,7 +15,7 @@ from load_model import load_model
 def test_model(model):
     eth_dataset = pandas.read_csv('eth-usd.csv')
     btc_values = eth_dataset.values[:, 1]
-    test_x, test_y = load_data(btc_values, 5)
+    test_x, test_y = load_data(btc_values, 997)
 
     test_x = np.reshape(test_x, (test_x.shape[0], test_x.shape[1], 1))
     predicted = model.predict(test_x)
